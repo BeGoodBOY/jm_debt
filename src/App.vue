@@ -45,4 +45,12 @@ img {
     -webkit-text-stroke-width: 0.2px;
     -moz-osx-font-smoothing: grayscale;
 }
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+h3, h4, h5, h6 {
+  font-weight: normal;
+}
 </style>

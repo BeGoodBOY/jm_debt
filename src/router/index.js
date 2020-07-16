@@ -33,6 +33,12 @@ const routes = [
     name: "DebtDstbtRst",
     title: "债权分配说明",
     component: () => import("../views/DebtDstbtRst")
+  },
+  {
+    path: "/agreement_template",
+    name: "AgreementTemplate",
+    title: "认领债权协议书",
+    component: () => import("../views/AgreementTemplate")
   }
 ];
 

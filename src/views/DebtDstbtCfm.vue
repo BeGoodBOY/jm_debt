@@ -13,7 +13,7 @@
       <div class="pane-box">
         <div class="pane-item">
           <div class="pane-item-cont">
-            ¥<em>{{ totalAmount }}</em>
+            ¥<em>{{ formatMoney(totalAmount) }}</em>
           </div>
           <div class="pane-item-tag">分配总金额（元）</div>
         </div>
@@ -39,19 +39,23 @@
           <tr v-for="item in debtList" :key="item.id" :id="item.id" @click="goDetail(item.id)">
             <td>{{ item.strProjectCategroy }}</td>
             <td>{{ item.strProjectName }}</td>
-            <td>{{ item.decAmount }}</td>
-            <td>{{ item.decRepayAmount }}</td>
+            <td>{{ formatMoney(item.decAmount) }}</td>
+            <td>{{ formatMoney(item.decRepayAmount) }}</td>
             <td style="color: #999;">{{ item.strRepayState }}</td>
           </tr>
         </table>
       </div>
     </div>
-    <span class="jm-btn-btm-lg" @click="confirmDebt">确认同意</span>
+    <div class="protocol-line">
+      <span class="protocol-check" :class="protocolClassOb" @click="goCheck"><i class="iconfont">&#xebe6;</i></span>
+      <em>同意并勾选<span class="protocol-entry">《认领债权协议书》</span></em>
+    </div>
+    <span class="jm-btn-btm-lg" :class="protocolClassOb" @click="confirmDebt">确认同意</span>
   </div>
 </template>
 <script>
 import axios from "axios";
-import { getStorage } from '../utils/utils'
+import { getStorage, formatMoney } from '../utils/utils'
 
 export default {
   name: "DebtDetail",
@@ -63,7 +67,10 @@ export default {
       totalAmount: 0, //分配总金额
       debtToBeConfirmCount: 0, //待确认债权分配比数
       protocolUrl: "", //协议地址
-      debtList: [] //债权列表
+      debtList: [], //债权列表
+      protocolClassOb: {
+        isActive: true
+      }
     };
   },
   mounted() {
@@ -89,6 +96,10 @@ export default {
   methods: {
     //确认债权认领
     confirmDebt() {
+      if(!this.protocolClassOb.isActive) {
+        // alert('请勾选《债权认领协议》')
+        return
+      }
       axios
         .get("/debt/confirm", {
           headers: {
@@ -99,7 +110,7 @@ export default {
           }
         })
         .then(() => {
-          this.$router.push('debt_dstbt_cfm')
+          this.$router.push('debt_dstbt_rst')
         })
         .catch(err => {
           alert(err);
@@ -110,6 +121,12 @@ export default {
     },
     goDetail(id) {
       this.$router.push('debt_detail/'+id) 
+    },
+    formatMoney(money) {
+      return formatMoney(money)
+    },
+    goCheck() {
+      this.protocolClassOb.isActive = !this.protocolClassOb.isActive
     }
   }
 };
@@ -117,6 +134,12 @@ export default {
 
 <style lang="scss" scoped>
 .main {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  overflow: auto;
   background: #f3f3f3;
 }
 
@@ -202,6 +225,9 @@ export default {
 .list-box {
   margin-top: 0.2rem;
   background: #fff;
+  .list-cont {
+    padding: 0 0.3rem;
+  }
 }
 
 .table-normal {
@@ -237,6 +263,45 @@ export default {
   font-size: 0.36rem;
   color: #fff;
   line-height: 1.2rem;
-  background-image: linear-gradient(to right,#2cb2fb,#208beb);
+  background: #eee;
+  &.isActive {
+    background-image: linear-gradient(to right,#2cb2fb,#208beb);
+  }
+}
+
+.protocol-line {
+  display: flex;
+  align-items: center;
+  height: 0.3rem;
+  margin-top: 0.5rem;
+  padding: 0 0.3rem;
+  font-size: 0.26rem;
+  line-height: 0.3rem;
+  color: #999;
+  text-align: left;
+  vertical-align: middle;
+  .protocol-entry {
+    color: #1a99f5;
+  }
+  .protocol-check {
+    box-sizing: border-box;
+    width: 0.3rem;
+    height: 0.3rem;
+    margin-right: 0.2rem;
+    border: 1px solid #1a99f5;
+    border-radius: 50%;
+    text-align: center;
+    .iconfont {
+      visibility: hidden;
+      font-size: 0.26rem;
+    }
+  }
+  .protocol-check.isActive {
+    background: #1a99f5;
+    .iconfont {
+      visibility: visible;
+      color: #fff;
+    }
+  }
 }
 </style>

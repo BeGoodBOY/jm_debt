@@ -15,11 +15,11 @@
       </h3>
       <div class="pane-box">
         <div class="pane-item">
-          <div class="pane-item-cont">¥<em>{{ clammedAmount }}</em></div>
+          <div class="pane-item-cont">¥<em>{{ formatMoney(clammedAmount) }}</em></div>
           <div class="pane-item-tag">认领金额(元)</div>
         </div>
         <div class="pane-item">
-          <div class="pane-item-cont">¥<em>{{ backedAmount }}</em></div>
+          <div class="pane-item-cont">¥<em>{{ formatMoney(backedAmount) }}</em></div>
           <div class="pane-item-tag">已回款金额(元)</div>
         </div>
         <span class="pane-item-line"></span>
@@ -55,7 +55,7 @@
         </div>
         <div class="jm-card-line space-between-box">
           <div class="jm-card-tag">借款本金（元）：</div>
-          <div class="jm-card-value">{{ debt.principal }}</div>
+          <div class="jm-card-value">{{ formatMoney(debt.principal) }}</div>
         </div>
         <div class="jm-card-line space-between-box">
           <div class="jm-card-tag">借款时间：</div>
@@ -63,7 +63,7 @@
         </div>
         <div class="jm-card-line space-between-box ">
           <div class="jm-card-tag">可认领金额：</div>
-          <div class="jm-card-value">{{ debt.claimableAmount }}</div>
+          <div class="jm-card-value">{{ formatMoney(debt.claimableAmount) }}</div>
         </div>
         <div class="jm-card-line space-between-box">
           <div class="jm-card-tag">还款方式：</div>
@@ -75,7 +75,7 @@
 </template>
 <script>
 import axios from "axios";
-import { getStorage } from "../utils/utils"
+import { getStorage, formatMoney } from "../utils/utils"
 
 export default {
   name: "DebtDetail",
@@ -138,6 +138,9 @@ export default {
     },
     goBack() {
       this.$router.back()
+    },
+    formatMoney(money) {
+      return formatMoney(money)
     }
   }
 };

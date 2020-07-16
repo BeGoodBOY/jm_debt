@@ -9,21 +9,21 @@
       </div>
     </div>
     <div class="sub-box">
-      <h3 class="sub-tit">我认领资产</h3>
+      <h3 class="sub-tit">我的认领资产</h3>
       <div class="pane-box">
-        <h3 class="pane-box-h3">申领金额（元）: {{ claimAmount }}</h3>
+        <h3 class="pane-box-h3">申领金额（元）: {{ formatMoney(claimAmount) }}</h3>
         <div class="pane-box-block">
           <div class="pane-item">
             <div class="pane-item-cont">
               ¥
-              <em>{{ ApplyAmount }}</em>
+              <em>{{ formatMoney(ApplyAmount) }}</em>
             </div>
             <div class="pane-item-tag">认领总资产（元）</div>
           </div>
           <div class="pane-item">
             <div class="pane-item-cont">
               ¥
-              <em>{{ repayAmount }}</em>
+              <em>{{ formatMoney(repayAmount) }}</em>
             </div>
             <div class="pane-item-tag">认领已回款（元）</div>
           </div>
@@ -60,8 +60,8 @@
           <tr v-for="item in debtList" :key="item.id" :id="item.id" @click="goDetail(item.id)">
             <td class="blue">{{ item.strProjectCategroy }}</td>
             <td>{{ item.strProjectName }}</td>
-            <td>{{ item.decAmount }}</td>
-            <td>{{ item.decRepayAmount }}</td>
+            <td>{{ formatMoney(item.decAmount) }}</td>
+            <td>{{ formatMoney(item.decRepayAmount) }}</td>
             <td :style="getStateStyle(item.strRepayState)">{{ item.strRepayState }}</td>
           </tr>
         </table>
@@ -88,7 +88,7 @@
 </template>
 <script>
 import axios from "axios";
-import { setStorage, getStorage } from '../utils/utils';
+import { setStorage, getStorage, formatMoney } from '../utils/utils';
 
 export default {
   name: "DebtDetail",
@@ -122,8 +122,8 @@ export default {
         .get("/user/collect", {
           headers: {
             Authorization: JSON.stringify({
-              token: getStorage('token'),
-              time: getStorage('time')
+              token: getStorage('jm_token'),
+              time: getStorage('jm_time')
             })
           }
         })
@@ -162,6 +162,9 @@ export default {
       if(text === "已完成") return {
         'color': '#90d177'
       }
+    },
+    formatMoney(money) {
+      return formatMoney(money)
     }
   }
 };
