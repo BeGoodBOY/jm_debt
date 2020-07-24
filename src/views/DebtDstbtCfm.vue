@@ -76,7 +76,7 @@ export default {
   mounted() {
     // const query = this.$route.query;
     axios
-      .get("/debt/view/confirm", {
+      .get("/api/debt/view/confirm", {
         headers: {
           Authorization: JSON.stringify({
             token: getStorage('jm_token'),
@@ -101,7 +101,7 @@ export default {
         return
       }
       axios
-        .get("/debt/confirm", {
+        .get("/api/debt/confirm", {
           headers: {
             Authorization: JSON.stringify({
               token: getStorage('jm_token'),

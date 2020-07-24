@@ -119,7 +119,7 @@ export default {
         setStorage('jm_time', query.time);
       }
       axios
-        .get("/user/collect", {
+        .get("/api/user/collect", {
           headers: {
             Authorization: JSON.stringify({
               token: getStorage('jm_token'),

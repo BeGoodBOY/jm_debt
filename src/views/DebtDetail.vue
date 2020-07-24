@@ -108,7 +108,7 @@ export default {
   methods: {
     getPageInfo() {
       axios
-        .get("/debt/detail/" + this.$route.params.id, {
+        .get("/api/debt/detail/" + this.$route.params.id, {
           headers: {
             Authorization: JSON.stringify({
               token: getStorage('jm_token'),
